@@ -13,12 +13,26 @@ public class StackStorage implements Stack {
 
 	}
 
+	private static StackStorage stack;
 	private Item esp;
 	private int stackSize;
+	private Blacklist blacklist;
 
-	public StackStorage() {
+	private StackStorage() {
 		this.esp = null;
 		this.stackSize = STACK_SIZE;
+		blacklist = new IllegalList();
+	}
+
+	public static StackStorage getStackStorage() {
+		if (stack == null) {
+			stack = new StackStorage();
+		}
+		return stack;
+	}
+
+	public Stack getStack() {
+		return stack;
 	}
 
 	public Object getEsp() {
@@ -29,12 +43,20 @@ public class StackStorage implements Stack {
 		return stackSize;
 	}
 
+	public Blacklist getBlacklist() {
+		return blacklist;
+	}
+
 	@Override
-	public void push(Object obj) throws StackSizeExceededException {
+	public void push(Object obj) {
 		if (stackSize == 0) {
 			throw new StackSizeExceededException();
 		}
 		
+		if (blacklist.isClassIllegal(obj.getClass())) {
+			throw new IllegalObjectException();
+		}
+
 		Item item = new Item(obj, esp);
 		esp = item;
 		stackSize--;
@@ -56,7 +78,7 @@ public class StackStorage implements Stack {
 	public Object peek() {
 		if (stackSize == STACK_SIZE) {
 			return null;
-		}else {
+		} else {
 			return esp.itemPointer;
 		}
 	}

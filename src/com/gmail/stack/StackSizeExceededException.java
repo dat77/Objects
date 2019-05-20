@@ -1,6 +1,6 @@
 package com.gmail.stack;
 
-public class StackSizeExceededException extends Exception {
+public class StackSizeExceededException extends RuntimeException {
 
 	@Override
 	public String getMessage() {

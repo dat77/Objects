@@ -1,6 +1,6 @@
 package com.gmail.stack;
 
-public class IllegalObjectException extends Exception {
+public class IllegalObjectException extends RuntimeException {
 	
 	@Override
 	public String getMessage() {
